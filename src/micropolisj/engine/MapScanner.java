@@ -38,6 +38,7 @@ class MapScanner extends TileBehavior
 		NUCLEAR,
 		FIRESTATION,
 		POLICESTATION,
+		PARKINGLOT,
 		STADIUM_EMPTY,
 		STADIUM_FULL,
 		AIRPORT,
@@ -71,6 +72,9 @@ class MapScanner extends TileBehavior
 			return;
 		case POLICESTATION:
 			doPoliceStation();
+			return;
+		case PARKINGLOT:
+			doParkingLot();
 			return;
 		case STADIUM_EMPTY:
 			doStadiumEmpty();
@@ -250,6 +254,30 @@ class MapScanner extends TileBehavior
 		}
 
 		city.policeMap[ypos/8][xpos/8] += z;
+	}
+	
+	void doParkingLot()
+	{
+		boolean powerOn = checkZonePower();
+		city.parkingLotCount++;
+		if ((city.cityTime % 8) == 0) {
+			repairZone(PARKINGLOT, 3);
+		}
+
+		int z;
+		if (powerOn) {
+			z = city.fireEffect;  //if powered, get effect
+		} else {
+			z = city.fireEffect/2; // from the funding ratio
+		}
+
+		traffic.mapX = xpos;
+		traffic.mapY = ypos;
+		if (!traffic.findPerimeterRoad()) {
+			z /= 2;
+		}
+
+		city.fireStMap[ypos/8][xpos/8] += z;
 	}
 
 	void doStadiumEmpty()

@@ -120,6 +120,7 @@ public class Micropolis
 	int churchCount;
 	int policeCount;
 	int fireStationCount;
+	int parkingLotCount;
 	int stadiumCount;
 	int coalCount;
 	int nuclearCount;
@@ -1463,6 +1464,7 @@ public class Micropolis
 		bb.put("NUCLEAR", new MapScanner(this, MapScanner.B.NUCLEAR));
 		bb.put("FIRESTATION", new MapScanner(this, MapScanner.B.FIRESTATION));
 		bb.put("POLICESTATION", new MapScanner(this, MapScanner.B.POLICESTATION));
+		bb.put("PARKINGLOT", new MapScanner(this, MapScanner.B.PARKINGLOT));
 		bb.put("STADIUM_EMPTY", new MapScanner(this, MapScanner.B.STADIUM_EMPTY));
 		bb.put("STADIUM_FULL", new MapScanner(this, MapScanner.B.STADIUM_FULL));
 		bb.put("AIRPORT", new MapScanner(this, MapScanner.B.AIRPORT));
