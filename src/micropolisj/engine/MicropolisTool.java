@@ -21,6 +21,7 @@ public enum MicropolisTool
 	RESIDENTIAL(3, 100),
 	COMMERCIAL(3, 100),
 	INDUSTRIAL(3, 100),
+	PARKING(3,250),
 	FIRE(3, 500),
 	POLICE(3, 500),
 	STADIUM(4, 5000),
@@ -61,6 +62,7 @@ public enum MicropolisTool
 		case RAIL:
 			return new RoadLikeTool(engine, this, xpos, ypos);
 
+		case PARKING:
 		case FIRE:
 		case POLICE:
 		case STADIUM:

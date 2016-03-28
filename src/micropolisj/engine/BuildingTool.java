@@ -37,6 +37,9 @@ class BuildingTool extends ToolStroke
 		case POLICE:
 			return applyZone(eff, POLICESTATION);
 
+		case PARKING:
+			return applyZone(eff, PARKINGLOT);
+			
 		case POWERPLANT:
 			return applyZone(eff, POWERPLANT);
 
