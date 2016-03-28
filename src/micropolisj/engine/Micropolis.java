@@ -1852,6 +1852,8 @@ public class Micropolis
 				{
 					assert b.policeRequest != 0;
 
+					b.parkingFunded = 0;
+					b.parkingPercent = 0.0;
 					b.policeFunded = yumDuckets;
 					b.policePercent = (double)b.policeFunded / (double)b.policeRequest;
 					yumDuckets = 0;
@@ -1863,6 +1865,8 @@ public class Micropolis
 
 				b.fireFunded = yumDuckets;
 				b.firePercent = (double)b.fireFunded / (double)b.fireRequest;
+				b.parkingFunded = 0;
+				b.parkingPercent = 0.0;
 				b.policeFunded = 0;
 				b.policePercent = 0.0;
 				yumDuckets = 0;
@@ -1878,9 +1882,11 @@ public class Micropolis
 			b.firePercent = 0.0;
 			b.policeFunded = 0;
 			b.policePercent = 0.0;
+			b.parkingFunded = 0;
+			b.parkingPercent = 0.0;
 		}
 
-		b.operatingExpenses = b.roadFunded + b.fireFunded + b.policeFunded;
+		b.operatingExpenses = b.roadFunded + b.fireFunded + b.policeFunded + b.parkingFunded;
 		b.newBalance = b.previousBalance + b.taxIncome - b.operatingExpenses;
 
 		return b;
