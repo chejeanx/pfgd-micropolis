@@ -136,6 +136,7 @@ public class Micropolis
 	int lastTotalPop;
 	int lastFireStationCount;
 	int lastPoliceCount;
+	int lastParkingLotCount;
 
 	int trafficMaxLocationX;
 	int trafficMaxLocationY;
@@ -173,6 +174,7 @@ public class Micropolis
 	public double roadPercent = 1.0;
 	public double policePercent = 1.0;
 	public double firePercent = 1.0;
+	public double parkingPercent = 1.0;
 
 	int taxEffect = 7;
 	int roadEffect = 32;
@@ -535,6 +537,7 @@ public class Micropolis
 		policeCount = 0;
 		fireStationCount = 0;
 		stadiumCount = 0;
+		parkingLotCount = 0;
 		coalCount = 0;
 		nuclearCount = 0;
 		seaportCount = 0;
@@ -1732,6 +1735,7 @@ public class Micropolis
 		lastTotalPop = totalPop;
 		lastFireStationCount = fireStationCount;
 		lastPoliceCount = policeCount;
+		lastParkingLotCount = parkingLotCount;
 
 		BudgetNumbers b = generateBudget();
 
@@ -1739,6 +1743,7 @@ public class Micropolis
 		budget.roadFundEscrow -= b.roadFunded;
 		budget.fireFundEscrow -= b.fireFunded;
 		budget.policeFundEscrow -= b.policeFunded;
+		budget.parkingFundEscrow -= b.parkingFunded;
 
 		taxEffect = b.taxRate;
 		roadEffect = b.roadRequest != 0 ?
@@ -1764,7 +1769,7 @@ public class Micropolis
 	void collectTax()
 	{
 		int revenue = budget.taxFund / TAXFREQ;
-		int expenses = -(budget.roadFundEscrow + budget.fireFundEscrow + budget.policeFundEscrow) / TAXFREQ;
+		int expenses = -(budget.roadFundEscrow + budget.fireFundEscrow + budget.policeFundEscrow + budget.parkingFundEscrow) / TAXFREQ;
 
 		FinancialHistory hist = new FinancialHistory();
 		hist.cityTime = cityTime;
@@ -1781,6 +1786,7 @@ public class Micropolis
 		budget.roadFundEscrow = 0;
 		budget.fireFundEscrow = 0;
 		budget.policeFundEscrow = 0;
+		budget.parkingFundEscrow = 0;
 	}
 
 	/** Annual maintenance cost of each police station. */
@@ -1788,6 +1794,9 @@ public class Micropolis
 
 	/** Annual maintenance cost of each fire station. */
 	static final int FIRE_STATION_MAINTENANCE = 100;
+	
+	/** Annual maintenance cost of each parking lot. */
+	static final int PARKING_LOT_MAINTENANCE = 50;
 
 	/**
 	 * Calculate the current budget numbers.
@@ -1799,6 +1808,7 @@ public class Micropolis
 		b.roadPercent = Math.max(0.0, roadPercent);
 		b.firePercent = Math.max(0.0, firePercent);
 		b.policePercent = Math.max(0.0, policePercent);
+		b.parkingPercent = Math.max(0.0, parkingPercent);
 
 		b.previousBalance = budget.totalFunds;
 		b.taxIncome = (int)Math.round(lastTotalPop * landValueAverage / 120 * b.taxRate * FLevels[gameLevel]);
@@ -1807,10 +1817,12 @@ public class Micropolis
 		b.roadRequest = (int)Math.round((lastRoadTotal + lastRailTotal * 2) * RLevels[gameLevel]);
 		b.fireRequest = FIRE_STATION_MAINTENANCE * lastFireStationCount;
 		b.policeRequest = POLICE_STATION_MAINTENANCE * lastPoliceCount;
+		b.parkingRequest = PARKING_LOT_MAINTENANCE * lastParkingLotCount;
 
 		b.roadFunded = (int)Math.round(b.roadRequest * b.roadPercent);
 		b.fireFunded = (int)Math.round(b.fireRequest * b.firePercent);
 		b.policeFunded = (int)Math.round(b.policeRequest * b.policePercent);
+		b.parkingFunded = (int)Math.round(b.parkingRequest * b.parkingPercent);
 
 		int yumDuckets = budget.totalFunds + b.taxIncome;
 		assert yumDuckets >= 0;
@@ -1824,6 +1836,17 @@ public class Micropolis
 				if (yumDuckets >= b.policeFunded)
 				{
 					yumDuckets -= b.policeFunded;
+					if (yumDuckets >= b.parkingFunded) {
+						yumDuckets -= b.parkingFunded;
+					}
+					else
+					{
+						assert b.parkingRequest != 0;
+						
+						b.parkingFunded = yumDuckets;
+						b.parkingPercent = (double)b.parkingFunded / (double)b.parkingRequest;
+						yumDuckets = 0;
+					}
 				}
 				else
 				{
