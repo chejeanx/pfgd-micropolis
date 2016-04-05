@@ -873,7 +873,7 @@ public class Micropolis
 			for (int hx = 0; hx < landValueMem[hy].length; hx++) {
 				int val = landValueMem[hy][hx];
 				int z = 128 - val + popDensity[hy][hx];
-				z += parkingMap[hy/5][hx/5];
+				z += parkingMap[hy/4][hx/4];
 				if (val != 0) {
 					count++;
 					z = Math.min(300, z);
