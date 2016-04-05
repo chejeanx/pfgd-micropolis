@@ -1386,7 +1386,6 @@ public class Micropolis
 		else if (indValve < -1500)
 			indValve = -1500;
 
-
 		if (resCap && resValve > 0) {
 			// residents demand stadium
 			resValve = 0;
@@ -2582,6 +2581,12 @@ public class Micropolis
 		case 22:
 			if (totalZoneCount > 10 && powerCount == 0) {
 				sendMessage(MicropolisMessage.NEED_POWER);
+			}
+			break;
+		case 24:
+			resCap = (resPop > 50 && parkingLotCount == 0);
+			if (resCap) {
+				sendMessage(MicropolisMessage.NEED_PARKING);
 			}
 			break;
 		case 26:
