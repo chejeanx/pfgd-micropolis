@@ -84,6 +84,8 @@ public class Micropolis
 
 	int [][] fireStMap;      //firestations- cleared and rebuilt each sim cycle
 	public int [][] fireRate;       //firestations reach- used for overlay graphs
+	int [][] parkingMap; // parking lots - cleared and rebuilt each sim cycle
+	public int [][] parkingMapEffect; // parking lot reach - used for overlay graphs
 	int [][] policeMap;      //police stations- cleared and rebuilt each sim cycle
 	public int [][] policeMapEffect;//police stations reach- used for overlay graphs
 
@@ -180,6 +182,7 @@ public class Micropolis
 	int roadEffect = 32;
 	int policeEffect = 1000;
 	int fireEffect = 1000;
+	int parkingEffect = 1000;
 
 	int cashFlow; //net change in totalFunds in previous year
 
@@ -248,6 +251,8 @@ public class Micropolis
 		policeMap = new int[smY][smX];
 		policeMapEffect = new int[smY][smX];
 		fireRate = new int[smY][smX];
+		parkingMap = new int[smY][smX];
+		parkingMapEffect = new int [smY][smX];
 		comRate = new int[smY][smX];
 
 		centerMassX = hX;
@@ -548,6 +553,7 @@ public class Micropolis
 			for (int x = 0; x < fireStMap[y].length; x++) {
 				fireStMap[y][x] = 0;
 				policeMap[y][x] = 0;
+				parkingMap[y][x] = 0;
 			}
 		}
 	}
@@ -1753,6 +1759,9 @@ public class Micropolis
 			1000;
 		fireEffect = b.fireRequest != 0 ?
 			(int)Math.floor(1000.0 * (double)b.fireFunded / (double)b.fireRequest) :
+			1000;
+		parkingEffect = b.parkingRequest != 0 ?
+			(int)Math.floor(1000.0 * (double)b.parkingFunded / (double)b.parkingRequest) :
 			1000;
 	}
 

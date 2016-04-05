@@ -266,9 +266,9 @@ class MapScanner extends TileBehavior
 
 		int z;
 		if (powerOn) {
-			z = city.fireEffect;  //if powered, get effect
+			z = city.parkingEffect;  //if powered, get effect
 		} else {
-			z = city.fireEffect/2; // from the funding ratio
+			z = city.parkingEffect/2; // from the funding ratio
 		}
 
 		traffic.mapX = xpos;
@@ -277,7 +277,7 @@ class MapScanner extends TileBehavior
 			z /= 2;
 		}
 
-		city.fireStMap[ypos/8][xpos/8] += z;
+		city.parkingMap[ypos/8][xpos/8] += z;
 	}
 
 	void doStadiumEmpty()
