@@ -855,6 +855,16 @@ public class Micropolis
 				policeMapEffect[sy][sx] = policeMap[sy][sx];
 			}
 		}
+		
+		parkingMap = smoothFirePoliceMap(parkingMap);
+		parkingMap = smoothFirePoliceMap(parkingMap);
+		parkingMap = smoothFirePoliceMap(parkingMap);
+
+		for (int sy = 0; sy < parkingMap.length; sy++) {
+			for (int sx = 0; sx < parkingMap[sy].length; sx++) {
+				parkingMapEffect[sy][sx] = parkingMap[sy][sx];
+			}
+		}
 
 		int count = 0;
 		int sum = 0;
@@ -862,9 +872,10 @@ public class Micropolis
 		for (int hy = 0; hy < landValueMem.length; hy++) {
 			for (int hx = 0; hx < landValueMem[hy].length; hx++) {
 				int val = landValueMem[hy][hx];
+				int z = 128 - val + popDensity[hy][hx];
+				z += parkingMap[hy/5][hx/5];
 				if (val != 0) {
 					count++;
-					int z = 128 - val + popDensity[hy][hx];
 					z = Math.min(300, z);
 					z -= policeMap[hy/4][hx/4];
 					z = Math.min(250, z);
@@ -2022,6 +2033,8 @@ public class Micropolis
 		firePercent = (double)n / 65536.0;
 		n = dis.readInt();                     //62,63... road percent
 		roadPercent = (double)n / 65536.0;
+		//n = dis.readInt();                     //64, 65... parking percent
+		//parkingPercent = (double)n / 65536.0;
 
 		for (int i = 64; i < 120; i++)
 		{
