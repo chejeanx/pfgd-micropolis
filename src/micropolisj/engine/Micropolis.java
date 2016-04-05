@@ -1120,8 +1120,32 @@ public class Micropolis
 	 */
 	void addTraffic(int mapX, int mapY, int traffic)
 	{
+		
+		parkingMap = smoothFirePoliceMap(parkingMap);
+		parkingMap = smoothFirePoliceMap(parkingMap);
+		parkingMap = smoothFirePoliceMap(parkingMap);
+
+		for (int sy = 0; sy < parkingMap.length; sy++) {
+			for (int sx = 0; sx < parkingMap[sy].length; sx++) {
+				parkingMapEffect[sy][sx] = parkingMap[sy][sx];
+			}
+		}
+		
 		int z = trfDensity[mapY/2][mapX/2];
 		z += traffic;
+		
+		for (int hy = 0; hy < trfDensity.length; hy++) {
+			for (int hx = 0; hx < trfDensity[hy].length; hx++) {
+				int val = trfDensity[hy][hx];
+				val -= parkingMap[hy/4][hx/4];
+			}
+		}
+		
+		//z -= parkingMap[mapY/2][mapX/2];
+		
+		if (z < 0) {
+			z = 0;
+		}
 
 		//FIXME- why is this only capped to 240
 		// by random chance. why is there no cap
