@@ -658,6 +658,7 @@ public class Micropolis
 
 		case 15:
 			fireAnalysis();
+			parkingAnalysis();
 			doDisasters();
 			break;
 
@@ -962,6 +963,20 @@ public class Micropolis
 		}
 
 		fireMapOverlayDataChanged(MapState.FIRE_OVERLAY);
+	}
+	
+	void parkingAnalysis()
+	{
+		fireStMap = smoothFirePoliceMap(parkingMap);
+		fireStMap = smoothFirePoliceMap(parkingMap);
+		fireStMap = smoothFirePoliceMap(parkingMap);
+		for (int sy = 0; sy < parkingMap.length; sy++) {
+			for (int sx = 0; sx < parkingMap[sy].length; sx++) {
+				parkingMapEffect[sy][sx] = parkingMap[sy][sx];
+			}
+		}
+
+		fireMapOverlayDataChanged(MapState.PARKING_OVERLAY);
 	}
 
 	private boolean testForCond(CityLocation loc, int dir)
